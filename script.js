@@ -2,10 +2,20 @@
 
 // Card variable
 const suits = ["Hearts", "Clubs", "Diamonds", "Spades"],
-      values = ["Ace", "King", "Queen", "Jack",
-      "Ten", "Nine", "Eight", "Seven",
-      "Six", "Five", "Four", "Three", 
-      "Two"];
+    values = ["Ace", "King", "Queen", "Jack",
+        "Ten", "Nine", "Eight", "Seven",
+        "Six", "Five", "Four", "Three",
+        "Two"];
+
+// Game variables
+let gameStarted = false,
+    gameOver = false,
+    playerWon = false,
+    dealerCards = [],
+    playerCards = [],
+    dealerScore = 0,
+    playerScore = 0,
+    deck = [];
 
 // DOM variables (needed for UI control)
 let textArea = document.getElementById('text-area');
@@ -14,9 +24,6 @@ let hitMeButton = document.getElementById('hit-me-button');
 let stayButton = document.getElementById('stay-button');
 
 intialPageSetup();
-
-let deckOfCards = createDeckOfCards();
-let playerCards = [getNextCard(), getNextCard()];
 
 console.log("You were dealt.");
 console.log("First card  : " + getCardAsString(playerCards[0]));
@@ -51,8 +58,22 @@ function intialPageSetup() {
     stayButton.style.display = 'none';
 }
 
-newGameButton.addEventListener('click', function() {
-    textArea.innerText = 'New Game Started !';
+function showStatus() {
+    if (!gameStarted) {
+        textArea.innerText = 'Welcome to Blackjack!';
+        return;
+    }
+}
+
+newGameButton.addEventListener('click', function () {
+    gameStarted = true;
+    gameOver = false;
+    playerWon = false;
+
+    deck = createDeckOfCards();
+    dealerCards = [getNextCard(), getNextCard()];
+    playerCards = [getNextCard(), getNextCard()];
+    
     newGameButton.style.display = 'none';
     hitMeButton.style.display = 'inline';
     stayButton.style.display = 'inline';
