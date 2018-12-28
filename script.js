@@ -2,22 +2,25 @@
 
 console.log("Welcome to Backjack!");
 
-let suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
+const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
 
-let values = ["Ace", "King", "Queen", "Jack",
+const values = ["Ace", "King", "Queen", "Jack",
     "Ten", "Nine", "Eight", "Seven",
     "Six", "Five", "Four", "Three", "Two"];
 
-let deckOfCards = [];
+function createDeckOfCards() {
+    let deckOfCards = [];
+    suits.forEach(suit => {
+        values.forEach(value => {
+            deckOfCards.push(value + " of " + suit);
+        })
+    });
+    return deckOfCards;
+}
 
-suits.forEach(suit => {
-    values.forEach(value => {
-        deckOfCards.push(value + " of " + suit);
-    })
-});
+const deckOfCards = createDeckOfCards();
 
-// For dev purpose, print the values
-
+// For dev purpose, print the full deck of cards
 deckOfCards.forEach(card => {
     console.log(card)
 });
