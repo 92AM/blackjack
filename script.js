@@ -77,9 +77,76 @@ function showStatus() {
         return;
     }
 
-    // deck.forEach(card => {
-    //     textArea.innerText += '\n' + getCardAsString(card);
-    // });
+    let dealerCardAsString = '';
+    dealerCards.forEach(dealerCard => {
+        dealerCardAsString += getCardAsString(dealerCard) + '\n';
+    });
+
+    let playerCardAsString = '';
+    playerCards.forEach(playerCard => {
+        playerCardAsString += getCardAsString(playerCard) + '\n';
+    });
+
+    updateScore();
+
+    textArea.innerText =
+        'Dealer has : \n' +
+        dealerCardAsString +
+        '(score :' + dealerScore + ')\n\n' +
+        'Player has : \n' +
+        playerCardAsString +
+        '(score :' + playerScore + ')\n\n';
+
+    if (gameOver) {
+        playerWon ? textArea.innerText += "YOU WIN !!!" : textArea.innerText += "DEALER WINS, YOU ARE UNLUCKY, GOOD LUCK NEXT TIME !";
+        newGameButton.style.display = 'inline';
+        hitMeButton.style.display = 'none';
+        stayButton.style.display = 'none';
+    }
+}
+
+function updateScore() {
+    dealerScore = getScore(dealerCards);
+    playerScore = getScore(playerCards);
+}
+
+function getScore(cardArray) {
+    let score = 0;
+    let hasAce = false;
+
+    cardArray.forEach(card => {
+        score += getCardNumericValue(card);
+        if (card.value === 'Ace') {
+            hasAce = true;
+        }
+    });
+
+    return (hasAce && (score + 10) <= 21) ? score += 10 : score;
+}
+
+function getCardNumericValue(card) {
+    switch (card.value) {
+        case 'Ace':
+            return 1;
+        case 'Two':
+            return 2;
+        case 'Three':
+            return 3;
+        case 'Four':
+            return 4;
+        case 'Five':
+            return 5;
+        case 'Six':
+            return 6;
+        case 'Seven':
+            return 7;
+        case 'Eight':
+            return 8;
+        case 'Nine':
+            return 9;
+        default:    
+            return 10;
+    }
 }
 
 /**
@@ -87,7 +154,7 @@ function showStatus() {
  * @param {*} deck 
  */
 function shuffleDeck(deck) {
-    deck.forEach( card => {
+    deck.forEach(card => {
         const swapIdx = Math.trunc(Math.random() * deck.length);
         [deck[swapIdx], card] = [card, deck[swapIdx]];
     });
@@ -102,7 +169,7 @@ newGameButton.addEventListener('click', function () {
     shuffleDeck(deck);
     dealerCards = [getNextCard(), getNextCard()];
     playerCards = [getNextCard(), getNextCard()];
-    
+
     newGameButton.style.display = 'none';
     hitMeButton.style.display = 'inline';
     stayButton.style.display = 'inline';
