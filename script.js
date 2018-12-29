@@ -25,12 +25,12 @@ let stayButton = document.getElementById('stay-button');
 
 intialPageSetup();
 
-console.log("You were dealt.");
-console.log("First card  : " + getCardAsString(playerCards[0]));
-console.log("Second card : " + getCardAsString(playerCards[1]));
-
 // All function declarations and event handlers
 
+/**
+ * @desc sets up deck of cards
+ * @returns array of card(s)
+ */
 function createDeckOfCards() {
     let deckOfCards = [];
     suits.forEach(cardSuit => {
@@ -45,24 +45,54 @@ function createDeckOfCards() {
     return deckOfCards;
 }
 
+/**
+ * @desc gets the next card in the deck
+ * @return card - removes the first element from the array and returns it
+ */
 function getNextCard() {
-    return deckOfCards.shift();
+    return deck.shift();
 }
 
+/**
+ * @desc gets card object as a string, this will include "card value of card suit"
+ * @param {*} card 
+ * @return String - "card value of card suit" 
+ */
 function getCardAsString(card) {
     return card.value + " of " + card.suit;
 }
 
+/**
+ * @desc sets up the initial display on page load
+ */
 function intialPageSetup() {
     hitMeButton.style.display = 'none';
     stayButton.style.display = 'none';
 }
 
+/**
+ * @desc displays status
+ */
 function showStatus() {
     if (!gameStarted) {
         textArea.innerText = 'Welcome to Blackjack!';
         return;
     }
+
+    // deck.forEach(card => {
+    //     textArea.innerText += '\n' + getCardAsString(card);
+    // });
+}
+
+/**
+ * @desc shuffles deck of cards
+ * @param {*} deck 
+ */
+function shuffleDeck(deck) {
+    deck.forEach( card => {
+        const swapIdx = Math.trunc(Math.random() * deck.length);
+        [deck[swapIdx], card] = [card, deck[swapIdx]];
+    });
 }
 
 newGameButton.addEventListener('click', function () {
@@ -71,10 +101,13 @@ newGameButton.addEventListener('click', function () {
     playerWon = false;
 
     deck = createDeckOfCards();
+    shuffleDeck(deck);
     dealerCards = [getNextCard(), getNextCard()];
     playerCards = [getNextCard(), getNextCard()];
     
     newGameButton.style.display = 'none';
     hitMeButton.style.display = 'inline';
     stayButton.style.display = 'inline';
+
+    showStatus();
 });
