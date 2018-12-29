@@ -173,6 +173,21 @@ newGameButton.addEventListener('click', function () {
     newGameButton.style.display = 'none';
     hitMeButton.style.display = 'inline';
     stayButton.style.display = 'inline';
-
     showStatus();
 });
+
+hitMeButton.addEventListener('click', function() {
+    playerCards.push(getNextCard());
+    checkIfItIsEndOfGame();
+    showStatus();
+});
+
+stayButton.addEventListener('click', function() {
+    gameOver = true;
+    checkIfItIsEndOfGame();
+    showStatus();
+});
+
+function checkIfItIsEndOfGame() {
+    // TODO
+}
