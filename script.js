@@ -121,17 +121,33 @@ function showStatus() {
   }
 }
 
+/**
+ * @desc Updates the buttons to initial configuration,
+ * i.e. hides the 'Hit' and 'Stay' button and displays
+ * the 'New game' button.
+ *
+ */
 function updateButtonsToInitialConfiguration() {
-    newGameButton.style.display = "inline";
-    hitMeButton.style.display = "none";
-    stayButton.style.display = "none";
+  newGameButton.style.display = "inline";
+  hitMeButton.style.display = "none";
+  stayButton.style.display = "none";
 }
 
+/**
+ * @desc Updates the dealerScore and the playerScore by calling
+ * the getScore() function.
+ *
+ */
 function updateScores() {
   dealerScore = getScore(dealerCards);
   playerScore = getScore(playerCards);
 }
 
+/**
+ * @desc Gets the total score based on array of cards passed in.
+ *
+ * @param {*} cardArray
+ */
 function getScore(cardArray) {
   let score = 0;
   let hasAce = false;
@@ -146,6 +162,13 @@ function getScore(cardArray) {
   return hasAce && score + 10 <= 21 ? (score += 10) : score;
 }
 
+/**
+ * @desc Gets the numeric value of a given card.value.
+ * For instance, if the card.value is Six then this function
+ * will return the number 6.
+ *
+ * @param {*} card
+ */
 function getCardNumericValue(card) {
   switch (card.value) {
     case "Ace":
@@ -182,6 +205,37 @@ function shuffleDeck(deck) {
   });
 }
 
+/**
+ * @desc Checks the state of the game, whether it has ended or not.
+ * Firstly it gets the scores of both dealer and player by calling
+ * the updateScores() function. Then it keeps pushing more cards to
+ * the dealerCards array until dealerScore is less than playerScore
+ * and playerScore is less than or equal to 21 and dealerScore is
+ * less than or equal to 21. After iterating through the loop if
+ * playerScore is greater than 21 then playerWon and gameOver is set
+ * to false and true respectively. Otherwise if dealerScore is greater
+ * than 21 then playerWon and gameOver is set too true and true
+ * respectively. Finally if gameOver is true then it checks whether
+ * playerScore is greater than dealerScore, if it is then playerWon is
+ * set to true, otherwise playerWon is set to false.
+ */
+function checkIfItIsEndOfGame() {
+  updateScores();
+
+  do {
+    dealerCards.push(getNextCard());
+    updateScores();
+  } while (dealerScore < playerScore && playerScore <= 21 && dealerScore <= 21);
+
+  if (playerScore > 21) {
+    [playerWon, gameOver] = [false, true];
+  } else if (dealerScore > 21) {
+    [playerWon, gameOver] = [true, true];
+  } else if (gameOver) {
+    playerScore > dealerScore ? (playerWon = true) : (playerWon = false);
+  }
+}
+
 newGameButton.addEventListener("click", function() {
   gameStarted = true;
   gameOver = false;
@@ -209,21 +263,3 @@ stayButton.addEventListener("click", function() {
   checkIfItIsEndOfGame();
   showStatus();
 });
-
-function checkIfItIsEndOfGame() {
-
-  updateScores();
-
-  do {
-    dealerCards.push(getNextCard());
-    updateScores();
-  } while (dealerScore < playerScore && playerScore <= 21 && dealerScore <= 21);
-
-  if (playerScore > 21) {
-    [playerWon, gameOver] = [false, true];
-  } else if (dealerScore > 21) {
-    [playerWon, gameOver] = [true, true];
-  } else if (gameOver) {
-    playerScore > dealerScore ? (playerWon = true) : (playerWon = false);
-  }
-}
