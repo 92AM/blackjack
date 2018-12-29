@@ -1,6 +1,4 @@
-// Blackjack by Arka Mitra
-
-// Card variable
+// Card variables
 const suits = ["Hearts", "Clubs", "Diamonds", "Spades"],
     values = ["Ace", "King", "Queen", "Jack",
         "Ten", "Nine", "Eight", "Seven",
@@ -25,7 +23,7 @@ let stayButton = document.getElementById('stay-button');
 
 intialPageSetup();
 
-// All function declarations and event handlers
+// All function definitions and event handlers
 
 /**
  * @desc sets up deck of cards
