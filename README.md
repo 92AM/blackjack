@@ -1,6 +1,6 @@
 # blackjack
 
-This is a simple game of blackjack that will run on browser. Most of the game's logic is written using core JavaScript and the UI is implemeneted using HTML and Bootstrap.
+This is a simple game of blackjack that will run on browser. Most of the game's logic is written using core JavaScript and the UI is implemented using HTML and Bootstrap.
 
 ## Dependencies
 
