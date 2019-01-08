@@ -20,6 +20,8 @@ const suits = ["Hearts", "Clubs", "Diamonds", "Spades"],
 let gameStarted = false,
   gameOver = false,
   playerWon = false,
+  isDraw = false,
+  firstRun = true,
   dealerCards = [],
   playerCards = [],
   dealerScore = 0,
@@ -112,11 +114,26 @@ function showStatus() {
     playerScore +
     ")\n\n";
 
+    if(dealerScore === playerScore) {
+      gameOver = true;
+      isDraw = true;
+    }
+
+    if(dealerScore === 21) {
+      playerWon = false;
+      gameOver = true;
+    }
+
+    if(playerScore === 21) {
+      playerWon = true;
+      gameOver = true;
+    }
+
   if (gameOver) {
-    playerWon
-      ? (textArea.innerText += "YOU WIN !!!")
-      : (textArea.innerText +=
-          "DEALER WINS, YOU ARE UNLUCKY, GOOD LUCK NEXT TIME !");
+    isDraw ? textArea.innerText += "DRAW !!!"
+    : (playerWon ? textArea.innerText += "YOU WIN !!!"
+      : textArea.innerText += "DEALER WINS !!!");
+
     updateButtonsToInitialConfiguration();
   }
 }
