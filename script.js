@@ -21,7 +21,6 @@ let gameStarted = false,
   gameOver = false,
   playerWon = false,
   isDraw = false,
-  firstRun = true,
   dealerCards = [],
   playerCards = [],
   dealerScore = 0,
@@ -257,6 +256,7 @@ newGameButton.addEventListener("click", function() {
   gameStarted = true;
   gameOver = false;
   playerWon = false;
+  isDraw = false;
 
   deck = createDeckOfCards();
   shuffleDeck(deck);
