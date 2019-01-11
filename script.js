@@ -21,6 +21,7 @@ let gameStarted = false,
   gameOver = false,
   playerWon = false,
   isDraw = false,
+  isFirstRun = true,
   dealerCards = [],
   playerCards = [],
   dealerScore = 0,
@@ -113,26 +114,27 @@ function showStatus() {
     playerScore +
     ")\n\n";
 
-    if(dealerScore === playerScore) {
-      gameOver = true;
-      isDraw = true;
-    }
-
-    if(dealerScore === 21) {
-      playerWon = false;
-      gameOver = true;
-    }
-
-    if(playerScore === 21) {
-      playerWon = true;
-      gameOver = true;
+    if(isFirstRun) {
+      doFirstRunChecks();
     }
 
   if (gameOver) {
-    isDraw ? textArea.innerText += "DRAW !!!"
-    : (playerWon ? textArea.innerText += "YOU WIN !!!"
-      : textArea.innerText += "DEALER WINS !!!");
 
+    /*isDraw ? textArea.innerText += "DRAW !!!"
+    : (playerWon ? textArea.innerText += "YOU WIN !!!"
+      : textArea.innerText += "DEALER WINS !!!");*/
+
+     if (!isDraw) {
+      if (playerWon) {
+        textArea.innerText += "YOU WIN !!!";
+       } else {
+        textArea.innerText += "DEALER WINS !!!";
+       }
+     }
+     else {
+      textArea.innerText += "DRAW !!!";
+     }
+          
     updateButtonsToInitialConfiguration();
   }
 }
@@ -249,7 +251,34 @@ function checkIfItIsEndOfGame() {
     [playerWon, gameOver] = [true, true];
   } else if (gameOver) {
     playerScore > dealerScore ? (playerWon = true) : (playerWon = false);
+    if(dealerScore === playerScore) {
+        isDraw = true;
+    }
   }
+}
+
+/**
+ * @desc Checks scores at the begining of the game and takes appropriate actions.
+ */
+function doFirstRunChecks() {
+  
+  if(dealerScore === playerScore && 
+    dealerScore === 21 && 
+    playerScore === 21) {
+      gameOver = true;
+      isDraw = true;
+  }
+
+  if(!isDraw) {
+    if(dealerScore === 21) {
+      [playerWon, gameOver] = [false, true];
+    }
+    if(playerScore === 21) {
+      [playerWon, gameOver] = [true, true];
+    }
+  }
+
+  isFirstRun = false;
 }
 
 newGameButton.addEventListener("click", function() {
@@ -257,6 +286,7 @@ newGameButton.addEventListener("click", function() {
   gameOver = false;
   playerWon = false;
   isDraw = false;
+  isFirstRun = true;
 
   deck = createDeckOfCards();
   shuffleDeck(deck);
