@@ -82,48 +82,24 @@ function intialPageSetup() {
 }
 
 /**
- * @desc displays status
+ * @desc Displays status by calling various functions.
  */
 function showStatus() {
+
   if (!gameStarted) {
     textArea.innerText = "Welcome to Blackjack!";
     return;
   }
 
-  let dealerCardAsString = "";
-  dealerCards.forEach(dealerCard => {
-    dealerCardAsString += getCardAsString(dealerCard) + "\n";
-  });
-
-  let playerCardAsString = "";
-  playerCards.forEach(playerCard => {
-    playerCardAsString += getCardAsString(playerCard) + "\n";
-  });
-
   updateScores();
-
-  textArea.innerText =
-    "Dealer has : \n" +
-    dealerCardAsString +
-    "(score :" +
-    dealerScore +
-    ")\n\n" +
-    "Player has : \n" +
-    playerCardAsString +
-    "(score :" +
-    playerScore +
-    ")\n\n";
+  printScores();
 
   if (isFirstRun) {
     doFirstRunChecks();
   }
 
   if (gameOver) {
-
-    !isDraw ? (playerWon ? textArea.innerText += "YOU WIN !!!" 
-    : textArea.innerText += "DEALER WINS !!!") 
-    : textArea.innerText += "DRAW !!!";
-
+    printResults();
     updateButtonsToInitialConfiguration();
   }
 }
@@ -141,13 +117,49 @@ function updateButtonsToInitialConfiguration() {
 }
 
 /**
+ * @desc Prints out the results, this would ideally be called when the game is over.
+ */
+function printResults() {
+  !isDraw ? (playerWon ? textArea.innerText += "YOU WIN !!!"
+    : textArea.innerText += "DEALER WINS !!!")
+    : textArea.innerText += "DRAW !!!";
+}
+
+/**
+ * @desc Prints out player's and dealer's scores.
+ */
+function printScores() {
+
+  let dealerCardAsString = "";
+  dealerCards.forEach(dealerCard => {
+    dealerCardAsString += getCardAsString(dealerCard) + "\n";
+  });
+
+  let playerCardAsString = "";
+  playerCards.forEach(playerCard => {
+    playerCardAsString += getCardAsString(playerCard) + "\n";
+  });
+
+  textArea.innerText =
+    "Dealer has : \n" +
+    dealerCardAsString +
+    "(score :" +
+    dealerScore +
+    ")\n\n" +
+    "Player has : \n" +
+    playerCardAsString +
+    "(score :" +
+    playerScore +
+    ")\n\n";
+}
+
+/**
  * @desc Updates the dealerScore and the playerScore by calling
  * the getScore() function.
  *
  */
 function updateScores() {
-  dealerScore = getScore(dealerCards);
-  playerScore = getScore(playerCards);
+  [dealerScore, playerScore] = [getScore(dealerCards), getScore(playerCards)];
 }
 
 /**
@@ -254,8 +266,7 @@ function doFirstRunChecks() {
   if (dealerScore === playerScore &&
     dealerScore === 21 &&
     playerScore === 21) {
-    gameOver = true;
-    isDraw = true;
+      [gameOver, isDraw] = [true, true];
   }
 
   if (!isDraw) {
