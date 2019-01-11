@@ -114,27 +114,16 @@ function showStatus() {
     playerScore +
     ")\n\n";
 
-    if(isFirstRun) {
-      doFirstRunChecks();
-    }
+  if (isFirstRun) {
+    doFirstRunChecks();
+  }
 
   if (gameOver) {
 
-    /*isDraw ? textArea.innerText += "DRAW !!!"
-    : (playerWon ? textArea.innerText += "YOU WIN !!!"
-      : textArea.innerText += "DEALER WINS !!!");*/
+    !isDraw ? (playerWon ? textArea.innerText += "YOU WIN !!!" 
+    : textArea.innerText += "DEALER WINS !!!") 
+    : textArea.innerText += "DRAW !!!";
 
-     if (!isDraw) {
-      if (playerWon) {
-        textArea.innerText += "YOU WIN !!!";
-       } else {
-        textArea.innerText += "DEALER WINS !!!";
-       }
-     }
-     else {
-      textArea.innerText += "DRAW !!!";
-     }
-          
     updateButtonsToInitialConfiguration();
   }
 }
@@ -251,8 +240,8 @@ function checkIfItIsEndOfGame() {
     [playerWon, gameOver] = [true, true];
   } else if (gameOver) {
     playerScore > dealerScore ? (playerWon = true) : (playerWon = false);
-    if(dealerScore === playerScore) {
-        isDraw = true;
+    if (dealerScore === playerScore) {
+      isDraw = true;
     }
   }
 }
@@ -261,19 +250,19 @@ function checkIfItIsEndOfGame() {
  * @desc Checks scores at the begining of the game and takes appropriate actions.
  */
 function doFirstRunChecks() {
-  
-  if(dealerScore === playerScore && 
-    dealerScore === 21 && 
+
+  if (dealerScore === playerScore &&
+    dealerScore === 21 &&
     playerScore === 21) {
-      gameOver = true;
-      isDraw = true;
+    gameOver = true;
+    isDraw = true;
   }
 
-  if(!isDraw) {
-    if(dealerScore === 21) {
+  if (!isDraw) {
+    if (dealerScore === 21) {
       [playerWon, gameOver] = [false, true];
     }
-    if(playerScore === 21) {
+    if (playerScore === 21) {
       [playerWon, gameOver] = [true, true];
     }
   }
@@ -281,7 +270,7 @@ function doFirstRunChecks() {
   isFirstRun = false;
 }
 
-newGameButton.addEventListener("click", function() {
+newGameButton.addEventListener("click", function () {
   gameStarted = true;
   gameOver = false;
   playerWon = false;
@@ -299,13 +288,13 @@ newGameButton.addEventListener("click", function() {
   showStatus();
 });
 
-hitMeButton.addEventListener("click", function() {
+hitMeButton.addEventListener("click", function () {
   playerCards.push(getNextCard());
   checkIfItIsEndOfGame();
   showStatus();
 });
 
-stayButton.addEventListener("click", function() {
+stayButton.addEventListener("click", function () {
   gameOver = true;
   checkIfItIsEndOfGame();
   showStatus();
